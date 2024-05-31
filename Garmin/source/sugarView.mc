@@ -19,7 +19,7 @@ class sugarView extends WatchUi.SimpleDataField {
         // See Activity.Info in the documentation for available information.
         //calculate time between now and last glucoseDatetime:
         var timePassed = Time.now().value() - glucoseDatetime;
-        if ((glucoseValue == null) || (timePassed > 60)) {
+        if ((glucoseValue == null) || (timePassed > 10*60)) {
             return "???";
         } else {
             return glucoseValue;

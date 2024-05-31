@@ -34,9 +34,9 @@ class sugarApp extends Application.AppBase {
         //parse data
         if (msg.data instanceof Toybox.Lang.Dictionary) {
             System.println("Received a dictionary: Parsing ...");
-            glucoseValue = msg.data.get("glucose")+1;
-            glucoseTrend = msg.data.get("trend")+1;
-            glucoseDatetime = msg.data.get("datetime")+1;
+            glucoseValue = msg.data.get("glucose");
+            glucoseTrend = msg.data.get("trend");
+            glucoseDatetime = msg.data.get("datetime");
         } else {
             System.println("Received something else: Stop.");
         }

@@ -1,0 +1,43 @@
+[ @file = "/Users/jan/git/candymountain/Garmin/source/sugarView.mc"; @line = 1; ]
+import Toybox.Activity;
+[ @file = "/Users/jan/git/candymountain/Garmin/source/sugarView.mc"; @line = 2; ]
+import Toybox.Lang;
+[ @file = "/Users/jan/git/candymountain/Garmin/source/sugarView.mc"; @line = 3; ]
+import Toybox.Time;
+[ @file = "/Users/jan/git/candymountain/Garmin/source/sugarView.mc"; @line = 4; ]
+import Toybox.WatchUi;
+[ @file = "/Users/jan/git/candymountain/Garmin/source/sugarView.mc"; @line = 6; ]
+class sugarView extends WatchUi.SimpleDataField{
+    [ @file = "/Users/jan/git/candymountain/Garmin/source/sugarView.mc"; @line = 6; ]
+    <init> {
+    }
+    [ @file = "/Users/jan/git/candymountain/Garmin/source/sugarView.mc"; @line = 6; ]
+    static
+    <init> {
+    }
+    [ @file = "/Users/jan/git/candymountain/Garmin/source/sugarView.mc"; @line = 9; ]
+    function initialize() as Void {
+_Users_jan_git_candymountain_Garmin_source_sugarView_mc_9_26_12_4_start:
+[ "/Users/jan/git/candymountain/Garmin/source/sugarView.mc" 10 8 ]
+        %tmp.2 = getv ? :SimpleDataField;
+        %tmp.3 = getv function %tmp.2 :initialize;
+        invoke %tmp.2 %tmp.3();
+[ "/Users/jan/git/candymountain/Garmin/source/sugarView.mc" 11 8 ]
+        %tmp.4 = "My Label";
+        putv self :label %tmp.4;
+_Users_jan_git_candymountain_Garmin_source_sugarView_mc_9_26_12_4_stop:
+    }
+    [ @file = "/Users/jan/git/candymountain/Garmin/source/sugarView.mc"; @line = 18; ]
+    function compute(info as Activity.Info) as Numeric or Duration or String or Null {
+_Users_jan_git_candymountain_Garmin_source_sugarView_mc_18_85_21_4_start:
+[ "/Users/jan/git/candymountain/Garmin/source/sugarView.mc" 20 8 ]
+        %tmp.2 = getv ? :string;
+        %tmp.3 = getv function %tmp.2 :toDouble;
+        %tmp.4 = invoke %tmp.2 %tmp.3();
+        ret %tmp.4;
+_Users_jan_git_candymountain_Garmin_source_sugarView_mc_18_85_21_4_stop:
+    }
+}
+[ @file = "/Users/jan/git/candymountain/Garmin/source/sugarView.mc"; @line = 1; ]
+<init> {
+}

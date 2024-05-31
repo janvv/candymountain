@@ -8,7 +8,7 @@ class sugarView extends WatchUi.SimpleDataField {
     // Set the label of the data field here.
     function initialize() {
         SimpleDataField.initialize();
-        label = "My Label";
+        label = "?";
     }
 
     // The given info object contains all the current workout
@@ -17,7 +17,13 @@ class sugarView extends WatchUi.SimpleDataField {
     // guarantee that compute() will be called before onUpdate().
     function compute(info as Activity.Info) as Numeric or Duration or String or Null {
         // See Activity.Info in the documentation for available information.
-        return string.toDouble();
+        //calculate time between now and last glucoseDatetime:
+        var timePassed = Time.now().value() - glucoseDatetime;
+        if ((glucoseValue == null) || (timePassed > 60)) {
+            return "???";
+        } else {
+            return glucoseValue;
+        }
     }
 
 }

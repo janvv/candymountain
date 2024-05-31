@@ -55,13 +55,12 @@ class AppMessageViewController: UIViewController, IQDeviceEventDelegate, IQAppMe
         self.init()
         self.appInfo = appInfo
         self.tableEntries = [
-            TableEntry(label: "60", message: "60" as AnyObject),
-            TableEntry(label: "120", message: "120" as AnyObject),
-            TableEntry(label: "200", message: "200" as AnyObject),
+            TableEntry(label: "Now", message: "now"),
+            TableEntry(label: "Outdated", message: "outdated")]
             /*TableEntry(label: "Dictionary", message: ["key1": "value1", "key2": NSNull(), "key3": (42), "key4": (123.456)]),
             TableEntry(label: "Complex Object", message: ["A string", ["A", "nested", "array"], ["key1": "A nested dictionary", "key2": "three strings...", "key3": "and one array", "key4": ["This array has two strings", "and a nested dictionary!", ["one": (1), "two": (2), "three": (3), "four": (4), "five": (5), (1.61803): "G.R."]]], "And one last null", NSNull()])
              */
-        ]
+        
     }
     
     override func viewDidLoad() {
@@ -103,7 +102,11 @@ class AppMessageViewController: UIViewController, IQDeviceEventDelegate, IQAppMe
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let entry = self.tableEntries[indexPath.row]
-        self.sendMessage(entry.message)
+        let glucose = Float.random(in: 40...400);
+        // subtract 300 seconds if entry.message == "Outdated"
+        let timestamp = entry.message as! String == "outdated" ? Int(Date().timeIntervalSince1970) - 300 : Int(Date().timeIntervalSince1970);
+        let message = ["glucose": glucose, "trend": 0, "datetime": timestamp] as [String : Any]
+        self.sendMessage(message)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     // --------------------------------------------------------------------------------

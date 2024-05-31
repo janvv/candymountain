@@ -48,14 +48,16 @@ class DeviceAppListViewController: UIViewController, IQDeviceEventDelegate, UITa
     convenience init(_ device: IQDevice) {
         self.init()
         self.device = device
-        let loopbackApp = IQApp(uuid: UUID(uuidString: "0180e520-5f7e-11e4-9803-0800200c9a66"), store: UUID(), device: device)
+        
+        //this is the garmin datafield to receive glucose
+        let sugar = IQApp(uuid: UUID(uuidString: "4e32944d-8bbb-41fd-8318-909efae86ac8"), store: UUID(), device: device)
+        
+        //this is the original garmin "string test app" ("Comm") to receive any messages (good for debugging)
+        //provided in the Objective C version of the SDK sample code https://github.com/garmin/connectiq-companion-app-sdk-ios
         let stringApp = IQApp(uuid: UUID(uuidString: "a3421fee-d289-106a-538c-b9547ab12095"), store: UUID(), device: device)
-        let gameApp = IQApp(uuid: UUID(uuidString: "3bc0423d-5f82-46bb-8396-e714f608232f"), store: UUID(uuidString: "8ecc61f6-541e-45e7-b227-278a39abefd8"), device: device)
-
-
-        self.appInfos[loopbackApp!.uuid] = AppInfo(name: "Loopback Test App", iqApp: loopbackApp!)
+        
+        self.appInfos[sugar!.uuid] = AppInfo(name: "sugar", iqApp: sugar!)
         self.appInfos[stringApp!.uuid] = AppInfo(name: "String Test App", iqApp: stringApp!)
-        self.appInfos[gameApp!.uuid] = AppInfo(name: "2048 App", iqApp: gameApp!)
     }
     
     override func viewDidLoad() {

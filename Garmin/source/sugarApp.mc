@@ -3,15 +3,21 @@ using Toybox.Lang;
 using Toybox.WatchUi;
 using Toybox.Communications;
 using Toybox.System;
+using Toybox.Time;
 
-var string = "";
 var phoneMethod;
+var glucoseValue;
+var glucoseTrend;
+var glucoseDatetime;
 
 class sugarApp extends Application.AppBase {
 
     function initialize() {
         Application.AppBase.initialize();
-
+        glucoseValue = -1;
+        glucoseTrend = -1;
+        glucoseDatetime = -1;
+        
         phoneMethod = method(:onPhone);
         if(Communications has :registerForPhoneAppMessages) {
             Communications.registerForPhoneAppMessages(phoneMethod);
@@ -21,9 +27,21 @@ class sugarApp extends Application.AppBase {
     }
 
     function onPhone(msg) {
-        string = msg.data.toString();
-        System.println("received message");
-        System.println(msg);
+        System.println("Received phone message");
+        var now = Time.now().value();
+        System.println("Received phone message: "+ msg.data.toString() +" at: "+ now);
+        
+        //parse data
+        if (msg.data instanceof Toybox.Lang.Dictionary) {
+            System.println("Received a dictionary: Parsing ...");
+            glucoseValue = msg.data.get("glucose");
+            glucoseTrend = msg.data.get("trend");
+            glucoseDatetime = msg.data.get("datetime");
+        } else {
+            System.println("Received something else: Stop.");
+        }
+        System.println("Parsed glucose:" + glucoseValue + ", trend: " + glucoseTrend + ", datetime: " + glucoseDatetime);
+        System.println("Age : "+ (now - glucoseDatetime));
         WatchUi.requestUpdate();
     }
     // onStart() is called on application start up

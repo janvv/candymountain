@@ -55,13 +55,12 @@ class AppMessageViewController: UIViewController, IQDeviceEventDelegate, IQAppMe
         self.init()
         self.appInfo = appInfo
         self.tableEntries = [
-            TableEntry(label: "Hello world", message: "Hello World!" as AnyObject),
-            TableEntry(label: "String (short)", message: "Hi" as AnyObject),
-            TableEntry(label: "String (medium)", message: "Why hello there, good world! This is a medium-length string." as AnyObject),
-            TableEntry(label: "String (long)", message: "Lorem ipsum dolor sit amet, pri ex epicuri luptatum, cum tantas partem fastidii an. Ea quot iudicabit vim, vis copiosae repudiandae at. Pri ut agam animal epicuri, nam cu omnis latine voluptatibus. Est dicat viderer ei, at possit sapientem ullamcorper vix, et eum virtute dolorum intellegat. No summo animal forensibus sit, singulis dissentiunt vix at, id congue theophrastus cum. Eam ex semper molestiae, te porro labore mel." as AnyObject),
-            TableEntry(label: "Array", message: ["An", "array", "of", "strings", "and", "one", "pi", (3.14159265359)]),
-            TableEntry(label: "Dictionary", message: ["key1": "value1", "key2": NSNull(), "key3": (42), "key4": (123.456)]),
+            TableEntry(label: "60", message: "60" as AnyObject),
+            TableEntry(label: "120", message: "120" as AnyObject),
+            TableEntry(label: "200", message: "200" as AnyObject),
+            /*TableEntry(label: "Dictionary", message: ["key1": "value1", "key2": NSNull(), "key3": (42), "key4": (123.456)]),
             TableEntry(label: "Complex Object", message: ["A string", ["A", "nested", "array"], ["key1": "A nested dictionary", "key2": "three strings...", "key3": "and one array", "key4": ["This array has two strings", "and a nested dictionary!", ["one": (1), "two": (2), "three": (3), "four": (4), "five": (5), (1.61803): "G.R."]]], "And one last null", NSNull()])
+             */
         ]
     }
     

@@ -14,7 +14,7 @@ class GlucoseViewController: UIViewController, IQDeviceEventDelegate, IQAppMessa
     var appInfo = AppInfo()
     var tableEntries = [TableEntry]()
     var logMessages = [String]()
-
+    
     var device: IQDevice {
         return self.appInfo.app.device
     }
@@ -24,14 +24,14 @@ class GlucoseViewController: UIViewController, IQDeviceEventDelegate, IQAppMessa
         self.appInfo = appInfo
     }
     
-    @IBOutlet weak var glucoseValueField: UITextField! // IBOutlet for the UITextView
-    @IBOutlet weak var glucoseStatusText: UITextView!
+    @IBOutlet weak var glucoseValueLabel: UILabel! // IBOutlet for the UITextView
+    @IBOutlet weak var glucoseDateLabel: UILabel!
+    @IBOutlet weak var glucoseTrendLabel: UILabel!
+    @IBOutlet weak var logView: UITextView!
     
     let healthStore = HKHealthStore()
     let glucoseType = HKQuantityType.quantityType(forIdentifier: .bloodGlucose)
 
-    //var latestBloodGlucoseSample: (glucose: Double, date: Date)? = nil
-    //private var latestBloodGlucoseSample: HKSample?
     private var latestBloodGlucoseSample: HKQuantitySample?
 
     override func viewWillAppear(_ animated: Bool) {
@@ -46,7 +46,7 @@ class GlucoseViewController: UIViewController, IQDeviceEventDelegate, IQAppMessa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        glucoseValueField.text = "Loading Glucose..."
+        glucoseValueLabel.text = "Loading Glucose..."
         // Do any additional setup after loading the view.
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -110,6 +110,7 @@ class GlucoseViewController: UIViewController, IQDeviceEventDelegate, IQAppMessa
     }
     
     private func fetchLatestBloodGlucose() {
+        logMessage("fetchLatestBloodGlucose() was invoked()")
         // Define the sample type for blood glucose
         guard let bloodGlucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose) else {
             // Handle the case when the blood glucose type is not available
@@ -146,20 +147,13 @@ class GlucoseViewController: UIViewController, IQDeviceEventDelegate, IQAppMessa
             //set glucose trend as double to -1
             var glucoseTrend = -1.0
             if let bloodGlucoseSampleMetadata = bloodGlucoseSample.metadata,
-               
                let trend = bloodGlucoseSampleMetadata["com.LoopKit.GlucoseKit.HKMetadataKey.GlucoseTrend"] as? String {
-                //log the unicode value of the trend
-                for scalar in trend.unicodeScalars {
-                    print(scalar.value)
-                }
                 //set glucoseTrend to the value of bloodGlucoseSampleMetadata["com.LoopKit.GlucoseKit.HKMetadataKey.GlucoseTrendRateValue"] if available
                 if let trendRate = bloodGlucoseSampleMetadata["com.LoopKit.GlucoseKit.HKMetadataKey.GlucoseTrendRateValue"] as? Double {
                     glucoseTrend = trendRate
                 }
                 
             }
-                
-            
             let message = ["glucose": bloodGlucose, "trend": glucoseTrend, "timestamp": Int(timestamp)] as [String : Any]
             self.sendMessage(message)
         }
@@ -170,9 +164,18 @@ class GlucoseViewController: UIViewController, IQDeviceEventDelegate, IQAppMessa
         if let bloodGlucoseSample = latestBloodGlucoseSample {
             let bloodGlucose = bloodGlucoseSample.quantity.doubleValue(for: HKUnit(from: "mg/dL"))
             let date = bloodGlucoseSample.startDate
-            glucoseValueField.text = "\(bloodGlucose) mg/dl"
-            glucoseStatusText.text = formatTimestamp(date)
+            glucoseValueLabel.text = String(format: "%.0f", bloodGlucose)
+            glucoseDateLabel.text = formatTimestamp(date)
+            if let bloodGlucoseSampleMetadata = bloodGlucoseSample.metadata,
+               let trendLabel = bloodGlucoseSampleMetadata["com.LoopKit.GlucoseKit.HKMetadataKey.GlucoseTrend"] as? String {
+                glucoseTrendLabel.text = trendLabel
             }
+        }
+    }
+    private func updateLogView() {
+        self.logView.text = (self.logMessages as NSArray).componentsJoined(by: "\n")
+        //self.logView.layoutManager.ensureLayout(for: self.logView.textContainer)
+        self.logView.scrollRangeToVisible(NSRange(location: self.logView.text.count - 1, length: 1))
     }
     
     // --------------------------------------------------------------------------------
@@ -205,7 +208,7 @@ class GlucoseViewController: UIViewController, IQDeviceEventDelegate, IQAppMessa
     // --------------------------------------------------------------------------------
     
     func sendMessage(_ message: Any) {
-        logMessage(">>>>> Sending message: \(message)")
+        logMessage("> Sending message: \(message)")
         ConnectIQ.sharedInstance().sendMessage(message, to: self.appInfo.app, progress: {(sentBytes: UInt32, totalBytes: UInt32) -> Void in
             let percent: Double = 100.0 * Double(sentBytes / totalBytes)
             print("Progress: \(percent)% sent \(sentBytes) bytes of \(totalBytes)")
@@ -215,10 +218,18 @@ class GlucoseViewController: UIViewController, IQDeviceEventDelegate, IQAppMessa
     }
     
     func logMessage(_ message: String) {
-        print("\(message)")
-        self.logMessages.append(message)
+        //get the current time of day as string
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss"
+        let time = formatter.string(from: Date())
+        print("\(time) \(message)")
+        self.logMessages.append("\(time) \(message)")
         while self.logMessages.count > kMaxLogMessages {
             self.logMessages.remove(at: 0)
+        }
+        //when in foreground mode update the logview on the main thread
+        DispatchQueue.main.async {
+            self.updateLogView()
         }
     }
 

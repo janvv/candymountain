@@ -105,7 +105,7 @@ class AppMessageViewController: UIViewController, IQDeviceEventDelegate, IQAppMe
         let glucose = Float.random(in: 40...400);
         // subtract 300 seconds if entry.message == "Outdated"
         let timestamp = entry.message as! String == "outdated" ? Int(Date().timeIntervalSince1970) - 300 : Int(Date().timeIntervalSince1970);
-        let message = ["glucose": glucose, "trend": 0, "datetime": timestamp] as [String : Any]
+        let message = ["glucose": glucose, "trend": 0, "timestamp": timestamp] as [String : Any]
         self.sendMessage(message)
         tableView.deselectRow(at: indexPath, animated: true)
     }

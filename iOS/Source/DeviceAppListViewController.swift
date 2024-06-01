@@ -51,13 +51,13 @@ class DeviceAppListViewController: UIViewController, IQDeviceEventDelegate, UITa
         
         //this is the garmin datafield to receive glucose
         let sugar = IQApp(uuid: UUID(uuidString: "4e32944d-8bbb-41fd-8318-909efae86ac8"), store: UUID(), device: device)
+        self.appInfos[sugar!.uuid!] = AppInfo(name: "sugar", iqApp: sugar!)
         
         //this is the original garmin "string test app" ("Comm") to receive any messages (good for debugging)
         //provided in the Objective C version of the SDK sample code https://github.com/garmin/connectiq-companion-app-sdk-ios
-        let stringApp = IQApp(uuid: UUID(uuidString: "a3421fee-d289-106a-538c-b9547ab12095"), store: UUID(), device: device)
+        //let stringApp = IQApp(uuid: UUID(uuidString: "a3421fee-d289-106a-538c-b9547ab12095"), store: UUID(), device: device)
+        //self.appInfos[stringApp!.uuid] = AppInfo(name: "String Test App", iqApp: stringApp!)
         
-        self.appInfos[sugar!.uuid] = AppInfo(name: "sugar", iqApp: sugar!)
-        self.appInfos[stringApp!.uuid] = AppInfo(name: "String Test App", iqApp: stringApp!)
     }
     
     override func viewDidLoad() {
@@ -141,8 +141,10 @@ class DeviceAppListViewController: UIViewController, IQDeviceEventDelegate, UITa
         self.currentAppId = appKey
         let appInfo = self.appInfos[appKey] as! AppInfo
         if appInfo.status?.isInstalled ?? false {
-            let vc = AppMessageViewController(appInfo)
-            self.navigationController?.pushViewController(vc, animated: true)
+            if appInfo.name == "sugar" {
+                let vc = GlucoseViewController(appInfo)
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
     

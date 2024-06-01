@@ -8,15 +8,15 @@ using Toybox.Time;
 var phoneMethod;
 var glucoseValue;
 var glucoseTrend;
-var glucoseDatetime;
+var glucoseTimestamp;
 
 class sugarApp extends Application.AppBase {
 
     function initialize() {
         Application.AppBase.initialize();
-        glucoseValue = -1;
-        glucoseTrend = -1;
-        glucoseDatetime = -1;
+        glucoseValue = null;
+        glucoseTrend = null;
+        glucoseTimestamp = null;
         
         phoneMethod = method(:onPhone);
         if(Communications has :registerForPhoneAppMessages) {
@@ -36,12 +36,12 @@ class sugarApp extends Application.AppBase {
             System.println("Received a dictionary: Parsing ...");
             glucoseValue = msg.data.get("glucose");
             glucoseTrend = msg.data.get("trend");
-            glucoseDatetime = msg.data.get("datetime");
+            glucoseTimestamp = msg.data.get("timestamp");
         } else {
             System.println("Received something else: Stop.");
         }
-        System.println("Parsed glucose:" + glucoseValue + ", trend: " + glucoseTrend + ", datetime: " + glucoseDatetime);
-        System.println("Age : "+ (now - glucoseDatetime));
+        System.println("Parsed glucose:" + glucoseValue + ", trend: " + glucoseTrend + ", timestamp: " + glucoseTimestamp);
+        System.println("Age : "+ (now - glucoseTimestamp));
         WatchUi.requestUpdate();
     }
     // onStart() is called on application start up

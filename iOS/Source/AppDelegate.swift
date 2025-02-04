@@ -40,10 +40,9 @@ import ConnectIQ
 class AppDelegate: UIResponder, UIApplicationDelegate, IQUIOverrideDelegate {
 
     var window: UIWindow?
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         ConnectIQ.sharedInstance().initialize(withUrlScheme: ReturnURLScheme, uiOverrideDelegate: nil)
-        
+                
         //there was some timing problems here because the delegate (of the DeviceManager) and the TableView (of the DeviceListViewController) were not available during runtime.
         let deviceManager = DeviceManager.sharedInstance
         let deviceListViewController = DeviceListViewController.deviceListViewController()
@@ -59,6 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, IQUIOverrideDelegate {
         self.window = window
         return true
     }
+    
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         print("Received URL: \(url)")

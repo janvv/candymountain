@@ -10,7 +10,7 @@ class sugarView extends WatchUi.SimpleDataField {
     function initialize() {
         SimpleDataField.initialize();
         //SimpleDataField.backgroundColor
-        label = "candymountain";
+        label = "Loop";
     }
 
     // The given info object contains all the current workout

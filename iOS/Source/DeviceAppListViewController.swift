@@ -50,7 +50,7 @@ class DeviceAppListViewController: UIViewController, IQDeviceEventDelegate, UITa
         self.device = device
         
         //this is the garmin datafield to receive glucose
-        let sugar = IQApp(uuid: UUID(uuidString: "4e32944d-8bbb-41fd-8318-909efae86ac8"), store: UUID(), device: device)
+        let sugar = IQApp(uuid: UUID(uuidString: "4e93029c-304d-45c1-8732-901fb8162887"), store: UUID(), device: device)
         self.appInfos[sugar!.uuid!] = AppInfo(name: "sugar", iqApp: sugar!)
         
         //this is the original garmin "string test app" ("Comm") to receive any messages (good for debugging)

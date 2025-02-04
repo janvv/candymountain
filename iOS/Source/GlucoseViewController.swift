@@ -52,11 +52,6 @@ class GlucoseViewController: UIViewController, IQDeviceEventDelegate, IQAppMessa
     override func viewDidAppear(_ animated: Bool) {
         requestAuthorization()
     }
-    
-    // add a button handler
-    @IBAction func sendButtonPressed(_ sender: Any) {
-        sendBloodGlucoseData()
-    }
 
     private func formatTimestamp(_ timestamp: Date) -> String {
         let formatter = DateFormatter()

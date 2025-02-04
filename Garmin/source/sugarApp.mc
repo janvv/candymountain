@@ -10,7 +10,7 @@ var glucoseValue;
 var glucoseTrend;
 var glucoseTimestamp;
 
-class sugarApp extends Application.AppBase {
+class Loop extends Application.AppBase {
 
     function initialize() {
         Application.AppBase.initialize();
@@ -59,6 +59,6 @@ class sugarApp extends Application.AppBase {
 
 }
 
-function getApp() as sugarApp {
-    return Application.getApp() as sugarApp;
+function getApp() as Loop {
+    return Application.getApp() as Loop;
 }
